@@ -147,9 +147,12 @@
     <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\TaskExtensions.cs" />
+    <Compile Include="Models\DataExchange.cs" />
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\Glucose.cs" />
+    <Compile Include="Models\MeasureKind.cs" />
     <Compile Include="Models\MeasurementType.cs" />
+    <Compile Include="Models\Record.cs" />
     <Compile Include="Models\SampleOrder.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultLaunchActivationHandler.cs" />
