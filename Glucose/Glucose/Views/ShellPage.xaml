@@ -24,10 +24,10 @@
             Edit String/en-US/Resources.resw: Add a menu item title for each page
             -->
             <NavigationViewItem x:Uid="Shell_Main" Icon="Document" helpers:NavHelper.NavigateTo="Glucose.ViewModels.MainViewModel" />
-            <NavigationViewItem x:Uid="Shell_WebView" Icon="Document" helpers:NavHelper.NavigateTo="Glucose.ViewModels.WebViewViewModel" />
-            <NavigationViewItem x:Uid="Shell_TelerikDataGrid" Icon="Document" helpers:NavHelper.NavigateTo="Glucose.ViewModels.TelerikDataGridViewModel" />
-            <NavigationViewItem x:Uid="Shell_Chart" Icon="Document" helpers:NavHelper.NavigateTo="Glucose.ViewModels.ChartViewModel" />
-            <NavigationViewItem x:Uid="Shell_Camera" Icon="Document" helpers:NavHelper.NavigateTo="Glucose.ViewModels.CameraViewModel" />
+            <NavigationViewItem x:Uid="Shell_WebView" Icon="World" helpers:NavHelper.NavigateTo="Glucose.ViewModels.WebViewViewModel" />
+            <NavigationViewItem x:Uid="Shell_TelerikDataGrid" Icon="ViewAll" helpers:NavHelper.NavigateTo="Glucose.ViewModels.TelerikDataGridViewModel" />
+            <NavigationViewItem x:Uid="Shell_Chart" Icon="Crop" helpers:NavHelper.NavigateTo="Glucose.ViewModels.ChartViewModel" />
+            <NavigationViewItem x:Uid="Shell_Camera" Icon="Camera" helpers:NavHelper.NavigateTo="Glucose.ViewModels.CameraViewModel" />
         </NavigationView.MenuItems>
         <NavigationView.HeaderTemplate>
             <DataTemplate>
