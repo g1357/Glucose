@@ -76,6 +76,8 @@ namespace Glucose
         /// <returns>Созданный сервис активации</returns>
         private ActivationService CreateActivationService()
         {
+            // Возвращает созданный сервис активации из данного приложения,
+            // элемента навигации по-умолчанию и оболочки обработки меню
             return new ActivationService(this, typeof(ViewModels.MainViewModel),
                 new Lazy<UIElement>(CreateShell));
         }
