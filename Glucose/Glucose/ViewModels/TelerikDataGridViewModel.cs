@@ -16,6 +16,7 @@ namespace Glucose.ViewModels
             {
                 // TODO WTS: Replace this with your actual data
                 return SampleDataService.GetGridSampleData();
+                //return DataService.GetGridData();
             }
         }
     }

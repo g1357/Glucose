@@ -5,16 +5,31 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
+/// <summary>
+/// Пространство имён помошников
+/// </summary>
 namespace Glucose.Helpers
 {
     // Use these extension methods to store and retrieve local and roaming app data
-    // More details regarding storing and retrieving app data at https://docs.microsoft.com/windows/uwp/app-settings/store-and-retrieve-app-data
+    // More details regarding storing and retrieving app data at
+    // https://docs.microsoft.com/windows/uwp/app-settings/store-and-retrieve-app-data
+    /// <summary>
+    /// Класс Расширение хранения параметров
+    /// </summary>
     public static class SettingsStorageExtensions
     {
+        // Расширения файла для сохранения параметров
         private const string FileExtension = ".json";
 
+        /// <summary>
+        /// Метод проверки доступности gthtvtoftvjuj [hfybkbof
+        /// </summary>
+        /// <param name="appData">Данные приложения</param>
+        /// <returns>"Истина", если перемещаемое хранилище доступно</returns>
         public static bool IsRoamingStorageAvailable(this ApplicationData appData)
         {
+            // Проверяем значение максимального размера перемещаемых данных
+            // Помоему ошибка!!!!!!!!!!!!
             return appData.RoamingStorageQuota == 0;
         }
 

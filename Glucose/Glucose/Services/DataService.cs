@@ -2,140 +2,117 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-
+using System.Threading.Tasks;
+using Glucose.Helpers;
 using Glucose.Models;
+using Windows.Storage;
 
 namespace Glucose.Services
 {
     // This class holds sample data used by some generated pages to show how they can be used.
     // TODO WTS: Delete this file once your app is using real data.
-    public static class DataService
+    public class DataService
     {
+        private const string dataFilename = "Data";
+
         private static DataExchange data;
 
-        private static IEnumerable<SampleOrder> AllOrders()
+        /// <summary>
+        /// Метод: Асинхронное сохранение состояния
+        /// </summary>
+        /// <returns>Нет</returns>
+        public async Task SaveDataAsync()
         {
-            // The following is order summary data
-            var data = new ObservableCollection<SampleOrder>
-            {
-                new SampleOrder
-                {
-                    OrderId = 70,
-                    OrderDate = new DateTime(2017, 05, 24),
-                    Company = "Company F",
-                    ShipTo = "Francisco Pérez-Olaeta",
-                    OrderTotal = 2490.00,
-                    Status = "Closed",
-                    Symbol = (char)57643 // Symbol.Globe
-                },
-                new SampleOrder
-                {
-                    OrderId = 71,
-                    OrderDate = new DateTime(2017, 05, 24),
-                    Company = "Company CC",
-                    ShipTo = "Soo Jung Lee",
-                    OrderTotal = 1760.00,
-                    Status = "Closed",
-                    Symbol = (char)57737 // Symbol.Audio
-                },
-                new SampleOrder
-                {
-                    OrderId = 72,
-                    OrderDate = new DateTime(2017, 06, 03),
-                    Company = "Company Z",
-                    ShipTo = "Run Liu",
-                    OrderTotal = 2310.00,
-                    Status = "Closed",
-                    Symbol = (char)57699 // Symbol.Calendar
-                },
-                new SampleOrder
-                {
-                    OrderId = 73,
-                    OrderDate = new DateTime(2017, 06, 05),
-                    Company = "Company Y",
-                    ShipTo = "John Rodman",
-                    OrderTotal = 665.00,
-                    Status = "Closed",
-                    Symbol = (char)57620 // Symbol.Camera
-                },
-                new SampleOrder
-                {
-                    OrderId = 74,
-                    OrderDate = new DateTime(2017, 06, 07),
-                    Company = "Company H",
-                    ShipTo = "Elizabeth Andersen",
-                    OrderTotal = 560.00,
-                    Status = "Shipped",
-                    Symbol = (char)57633 // Symbol.Clock
-                },
-                new SampleOrder
-                {
-                    OrderId = 75,
-                    OrderDate = new DateTime(2017, 06, 07),
-                    Company = "Company F",
-                    ShipTo = "Francisco Pérez-Olaeta",
-                    OrderTotal = 810.00,
-                    Status = "Shipped",
-                    Symbol = (char)57661 // Symbol.Contact
-                },
-                new SampleOrder
-                {
-                    OrderId = 76,
-                    OrderDate = new DateTime(2017, 06, 11),
-                    Company = "Company I",
-                    ShipTo = "Sven Mortensen",
-                    OrderTotal = 196.50,
-                    Status = "Shipped",
-                    Symbol = (char)57619 // Symbol.Favorite
-                },
-                new SampleOrder
-                {
-                    OrderId = 77,
-                    OrderDate = new DateTime(2017, 06, 14),
-                    Company = "Company BB",
-                    ShipTo = "Amritansh Raghav",
-                    OrderTotal = 270.00,
-                    Status = "New",
-                    Symbol = (char)57615 // Symbol.Home
-                },
-                new SampleOrder
-                {
-                    OrderId = 78,
-                    OrderDate = new DateTime(2017, 06, 14),
-                    Company = "Company A",
-                    ShipTo = "Anna Bedecs",
-                    OrderTotal = 736.00,
-                    Status = "New",
-                    Symbol = (char)57625 // Symbol.Mail
-                },
-                new SampleOrder
-                {
-                    OrderId = 79,
-                    OrderDate = new DateTime(2017, 06, 18),
-                    Company = "Company K",
-                    ShipTo = "Peter Krschne",
-                    OrderTotal = 800.00,
-                    Status = "New",
-                    Symbol = (char)57806 // Symbol.OutlineStar
-                },
-            };
-
-            return data;
+            await ApplicationData.Current.LocalFolder.SaveAsync(dataFilename, data);
         }
 
-        // TODO WTS: Remove this once your chart page is displaying real data
-        public static ObservableCollection<DataPoint> GetChartSampleData()
+        /// <summary>
+        /// Метод: Асинхронное восстановление состояния
+        /// </summary>
+        /// <returns>Нет</returns>
+        private async Task RestoreDataAsync()
         {
-            var data = AllOrders().Select(o => new DataPoint() { Category = o.Company, Value = o.OrderTotal })
-                                  .OrderBy(dp => dp.Category);
+            data = await ApplicationData.Current.LocalFolder.ReadAsync<DataExchange>(dataFilename);
+            if (data == null)
+            {
+                data = new DataExchange
+                {
+                    Version = "1.0",
+                    Timestamp = "20180713210900",
+                    TypeList = new List<MeasurementType>
+                    {
+                        new MeasurementType() {TypeId = 1, TypeName = "Сахар",
+                            TypeDescription = "Уровень сахара (глюкозы) в крови" },
+                        new MeasurementType() {TypeId = 2, TypeName = "Вес",
+                            TypeDescription = "Вес" },
+                        new MeasurementType() {TypeId = 3, TypeName = "Холестерин",
+                            TypeDescription = "Уровень холестерин в крови" },
+                        new MeasurementType() {TypeId = 4, TypeName = "Мочевая кислота",
+                            TypeDescription = "Уровень мочевой кислоты в крови" },
+                        new MeasurementType() {TypeId = 5, TypeName = "Гемоглобин",
+                            TypeDescription = "Уровень гемоглобина в крови" },
+                    },
+                    KindList = new List<MeasurementKind>
+                    {
+                        new MeasurementKind() {KindId = 1, KindName = "Утро",
+                            KindDescription = "После подъёма, перед едой" },
+                        new MeasurementKind() {KindId = 2, KindName = "После фитнеса",
+                            KindDescription = "Сразу после занятий фитнесов, спортом" },
+                        new MeasurementKind() {KindId = 3, KindName = "После завтрака",
+                            KindDescription = "Через 2 часа после завтрака" },
+                        new MeasurementKind() {KindId = 4, KindName = "После обеда",
+                            KindDescription = "Через 2 часа после обеда" },
+                        new MeasurementKind() {KindId = 5, KindName = "После ужина",
+                            KindDescription = "Через 2 часа после ужина" },
+                        new MeasurementKind() {KindId = 6, KindName = "После бани",
+                            KindDescription = "Сразу после бани" },
+                        new MeasurementKind() {KindId = 7, KindName = "После кардионагрузки",
+                            KindDescription = "Сразу после велотренажёра или беговой дорожки" },
+                        new MeasurementKind() {KindId = 8, KindName = "После работы",
+                            KindDescription = "После приезда с работы, если на работе на обедал" },
+                        new MeasurementKind() {KindId = 9, KindName = "Без вида",
+                            KindDescription = "Не задано значение вида измерения" },
+                        new MeasurementKind() {KindId = 10, KindName = "Перед обедом",
+                            KindDescription = "Перед обедом, после большого перерыва" },
+                    },
+                    Data = new List<Record>
+                    {
+                        new Record { Data_Time = new DateTime(2018, 07, 08, 17, 15, 00), Value =  9.3m, TypeId = 1, KindId =10 },
+                        new Record { Data_Time = new DateTime(2018, 07, 08, 21, 30, 00), Value =  7.7m, TypeId = 1, KindId =7 },
+                        new Record { Data_Time = new DateTime(2018, 07, 09, 06, 10, 00), Value = 11.7m, TypeId = 1, KindId =1 },
+                        new Record { Data_Time = new DateTime(2018, 07, 10, 17, 10, 00), Value =  8.7m, TypeId = 1, KindId =8 },
+                        new Record { Data_Time = new DateTime(2018, 07, 11, 06, 10, 00), Value = 11.2m, TypeId = 1, KindId =1 },
+                        new Record { Data_Time = new DateTime(2018, 07, 11, 18, 40, 00), Value =  8.1m, TypeId = 1, KindId =8 }
+                    }
+                };
+            }
+        }
 
-            return new ObservableCollection<DataPoint>(data);
+
+        // TODO WTS: Remove this once your chart page is displaying real data
+        public static ObservableCollection<DataPoint> GetChartData()
+        {
+            //var data = AllOrders().Select(o => new DataPoint() { Category = o.Company, Value = o.OrderTotal })
+            //                      .OrderBy(dp => dp.Category);
+
+            //return new ObservableCollection<DataPoint>(data);
+            return null;
         }
 
         // TODO WTS: Remove this once your grid page is displaying real data
-        public static ObservableCollection<SampleOrder> GetGridSampleData()
+        /// <summary>
+        /// Метод возвращает данные для таблицы
+        /// </summary>
+        /// <returns>Коллекция значений замеров</returns>
+        public static ObservableCollection<Record> GetGridData()
         {
-            return new ObservableCollection<SampleOrder>(AllOrders());
+            if (data == null)
+            {
+
+            }
+            var result = data.Data.FindAll(r => r.TypeId == 1);
+
+            return new ObservableCollection<Record>(result);
         }
     }
 }

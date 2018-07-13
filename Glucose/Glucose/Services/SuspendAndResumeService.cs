@@ -20,6 +20,10 @@ namespace Glucose.Services
         // TODO WTS: Subscribe to this event if you want to save the current state. It is fired just before the app enters the background.
         public event EventHandler<OnBackgroundEnteringEventArgs> OnBackgroundEntering;
 
+        /// <summary>
+        /// Метод: Асинхронное сохранение состояния
+        /// </summary>
+        /// <returns>Нет</returns>
         public async Task SaveStateAsync()
         {
             var suspensionState = new SuspensionState()
@@ -45,6 +49,10 @@ namespace Glucose.Services
             return args.PreviousExecutionState == ApplicationExecutionState.Terminated;
         }
 
+        /// <summary>
+        /// Метод: Асинхронное восстановление состояния
+        /// </summary>
+        /// <returns>Нет</returns>
         private async Task RestoreStateAsync()
         {
             var saveState = await ApplicationData.Current.LocalFolder.ReadAsync<OnBackgroundEnteringEventArgs>(StateFilename);

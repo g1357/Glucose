@@ -18,7 +18,7 @@ namespace Glucose.Models
         /// <summary>
         /// Штамп времени
         /// </summary>
-        public string Timespamp;
+        public string Timestamp;
         /// <summary>
         /// Список типов измерений (параметров)
         /// </summary>
