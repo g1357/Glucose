@@ -9,27 +9,27 @@ namespace Glucose.Models
     /// <summary>
     /// Запись об единичном измерении одного параметра
     /// </summary>
-    public class Record
+    public class Record2
     {
         /// <summary>
         /// Дата и время измерения
         /// </summary>
-        public DateTime Date_Time;
+        public DateTime Date_Time { get; set; }
         /// <summary>
         /// Значение параметра
         /// </summary>
-        public decimal Value;
+        public decimal Value { get; set; }
         /// <summary>
         /// Измеряемый параметр
         /// </summary>
-        public int TypeId;
+        public string Type { get; set; }
         /// <summary>
         /// Вид измерения
         /// </summary>
-        public int KindId;
+        public string Kind { get; set; }
         /// <summary>
         /// Примечания
         /// </summary>
-        public string Remark;
+        public string Remark { get; set; }
     }
 }

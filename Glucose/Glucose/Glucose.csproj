@@ -152,8 +152,10 @@
     <Compile Include="Models\Glucose.cs" />
     <Compile Include="Models\MeasureKind.cs" />
     <Compile Include="Models\MeasurementType.cs" />
+    <Compile Include="Models\Record2.cs" />
     <Compile Include="Models\Record.cs" />
     <Compile Include="Models\SampleOrder.cs" />
+    <Compile Include="Models\TypeList.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultLaunchActivationHandler.cs" />
     <Compile Include="Services\AzureNotificationsService.cs" />

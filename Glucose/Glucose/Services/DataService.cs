@@ -15,7 +15,7 @@ namespace Glucose.Services
     {
         private const string dataFilename = "Data";
 
-        private static DataExchange data;
+        private static DataExchange data = null;
 
         /// <summary>
         /// Метод: Асинхронное сохранение состояния
@@ -30,9 +30,10 @@ namespace Glucose.Services
         /// Метод: Асинхронное восстановление состояния
         /// </summary>
         /// <returns>Нет</returns>
-        private async Task RestoreDataAsync()
+        //private async Task RestoreDataAsync()
+        private static void RestoreData()
         {
-            data = await ApplicationData.Current.LocalFolder.ReadAsync<DataExchange>(dataFilename);
+            //data = await ApplicationData.Current.LocalFolder.ReadAsync<DataExchange>(dataFilename);
             if (data == null)
             {
                 data = new DataExchange
@@ -77,12 +78,12 @@ namespace Glucose.Services
                     },
                     Data = new List<Record>
                     {
-                        new Record { Data_Time = new DateTime(2018, 07, 08, 17, 15, 00), Value =  9.3m, TypeId = 1, KindId =10 },
-                        new Record { Data_Time = new DateTime(2018, 07, 08, 21, 30, 00), Value =  7.7m, TypeId = 1, KindId =7 },
-                        new Record { Data_Time = new DateTime(2018, 07, 09, 06, 10, 00), Value = 11.7m, TypeId = 1, KindId =1 },
-                        new Record { Data_Time = new DateTime(2018, 07, 10, 17, 10, 00), Value =  8.7m, TypeId = 1, KindId =8 },
-                        new Record { Data_Time = new DateTime(2018, 07, 11, 06, 10, 00), Value = 11.2m, TypeId = 1, KindId =1 },
-                        new Record { Data_Time = new DateTime(2018, 07, 11, 18, 40, 00), Value =  8.1m, TypeId = 1, KindId =8 }
+                        new Record { Date_Time = new DateTime(2018, 07, 08, 17, 15, 00), Value =  9.3m, TypeId = 1, KindId =10 },
+                        new Record { Date_Time = new DateTime(2018, 07, 08, 21, 30, 00), Value =  7.7m, TypeId = 1, KindId =7 },
+                        new Record { Date_Time = new DateTime(2018, 07, 09, 06, 10, 00), Value = 11.7m, TypeId = 1, KindId =1 },
+                        new Record { Date_Time = new DateTime(2018, 07, 10, 17, 10, 00), Value =  8.7m, TypeId = 1, KindId =8 },
+                        new Record { Date_Time = new DateTime(2018, 07, 11, 06, 10, 00), Value = 11.2m, TypeId = 1, KindId =1 },
+                        new Record { Date_Time = new DateTime(2018, 07, 11, 18, 40, 00), Value =  8.1m, TypeId = 1, KindId =8 }
                     }
                 };
             }
@@ -104,15 +105,20 @@ namespace Glucose.Services
         /// Метод возвращает данные для таблицы
         /// </summary>
         /// <returns>Коллекция значений замеров</returns>
-        public static ObservableCollection<Record> GetGridData()
+        public static ObservableCollection<Record2> GetGridData()
         {
             if (data == null)
             {
-
+                    RestoreData();
             }
-            var result = data.Data.FindAll(r => r.TypeId == 1);
+            var result = data.Data.FindAll(r => r.TypeId == 1)
+                .Join(data.TypeList, r => r.TypeId, t => t.TypeId,
+                    (r, t) => new { Date_Time = r.Date_Time, Value = r.Value, Type = t.TypeName, KindId = r.KindId, Remark = r.Remark })
+                 .Join(data.KindList, r => r.KindId, k => k.KindId,
+                     (r, k) => new Record2{ Date_Time = r.Date_Time, Value = r.Value, Type = r.Type, Kind = k.KindName, Remark = r.Remark }) ;
 
-            return new ObservableCollection<Record>(result);
+
+            return new ObservableCollection<Record2>(result);
         }
     }
 }
