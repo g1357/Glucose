@@ -14,6 +14,8 @@
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
             <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
                 Place your content here.-->
+            <Button Content="Test OneDrive" Command="{x:Bind ViewModel.TestOneDrive}"/>
+
         </Grid>
     </Grid>
 </Page>
