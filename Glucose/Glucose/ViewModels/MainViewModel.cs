@@ -60,6 +60,10 @@ namespace Glucose.ViewModels
                             .Root
                             .Request()
                             .GetAsync();
+
+            var items = await oneDriveClient.Drive.Root.Children.Request().GetAsync();
+
+            var item1 = await oneDriveClient.Drive.Items["Документ1.docx"].Request().GetAsync();
         }
 
     }
