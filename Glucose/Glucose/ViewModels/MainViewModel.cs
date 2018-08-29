@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
@@ -63,7 +65,20 @@ namespace Glucose.ViewModels
 
             var items = await oneDriveClient.Drive.Root.Children.Request().GetAsync();
 
-            var item1 = await oneDriveClient.Drive.Items["Документ1.docx"].Request().GetAsync();
+            var item1 = await oneDriveClient.Drive.Items["A13352E228C6410D!145135"].Request().GetAsync();
+
+            var builder = oneDriveClient.Drive.Root.ItemWithPath("file.txt");
+            var file = await builder
+              .Request()
+              .GetAsync();
+            var contentStream = await builder.Content
+              .Request()
+              .GetAsync();
+            Debug.WriteLine($"Content for file {file.Name}:");
+            using (var reader = new StreamReader(contentStream))
+            {
+                Debug.WriteLine(reader.ReadToEnd());
+            }
         }
 
     }
