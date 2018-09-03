@@ -15,5 +15,10 @@ namespace Glucose.Models
         /// Имя файла данных
         /// </summary>
         public string FileName;
+
+        /// <summary>
+        /// Временной штамп созания файла данных
+        /// </summary>
+        public DateTime TimeStamp;
     }
 }

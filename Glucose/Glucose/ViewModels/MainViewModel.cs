@@ -48,8 +48,17 @@ namespace Glucose.ViewModels
             var msaAuthProvider = new MsaAuthenticationProvider(
                 ClientId,
                 ReturnURI,
-                new string[] { "onedrive.readwrite", "wl.signin" });
+                new string[] { "onedrive.readwrite", "wl.signin", "wl.offline_access" });
             await msaAuthProvider.AuthenticateUserAsync();
+
+            var session = msaAuthProvider.CurrentAccountSession;
+            Debug.WriteLine($"AccessToken: {session.AccessToken}");
+            Debug.WriteLine($"CanRefresh: {session.CanRefresh}");
+            Debug.WriteLine($"RefreshToken: {session.RefreshToken}");
+            Debug.WriteLine($"ExpiresOnUtc: {session.ExpiresOnUtc}");
+
+            var _refreshToken = session.RefreshToken;
+
             var oneDriveClient = new OneDriveClient("https://api.onedrive.com/v1.0", msaAuthProvider);
 
             var drive = await oneDriveClient
@@ -79,7 +88,38 @@ namespace Glucose.ViewModels
             {
                 Debug.WriteLine(reader.ReadToEnd());
             }
+
+            AccountSession accSession = new AccountSession();
+            accSession.ClientId = ClientId;
+            accSession.RefreshToken = _refreshToken;
+            var _msaAuthProvider = new MsaAuthenticationProvider(
+                ClientId,
+                ReturnURI,
+                new string[] { "onedrive.readwrite", "wl.signin", "wl.offline_access" });
+            var _oneDriveClient = new OneDriveClient("https://api.onedrive.com/v1.0", _msaAuthProvider);
+            _msaAuthProvider.CurrentAccountSession = accSession;
+            await _msaAuthProvider.AuthenticateUserAsync();
+            var _builder = _oneDriveClient.Drive.Root.ItemWithPath("file.txt");
+            var _file = await builder
+              .Request()
+              .GetAsync();
+            var _contentStream = await _builder.Content
+              .Request()
+              .GetAsync();
+            Debug.WriteLine($"Content for file {_file.Name}:");
+            using (var _reader = new StreamReader(_contentStream))
+            {
+                Debug.WriteLine(_reader.ReadToEnd());
+            }
+
         }
+
+        private void DoTest2()
+        {
+            var scopes = new[] { "onedrive.readwrite", "onedrive.appfolder", "wl.signin" };
+            //var _client = 
+        }
+
 
     }
 }
